@@ -1,0 +1,1 @@
+Scribing page for CS281. See example for use of the template.
