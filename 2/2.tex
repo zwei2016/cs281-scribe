@@ -5,7 +5,7 @@
 
 \begin{document}
 %\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
-\lecture{1}{September 6}{Sasha Rush}{Anna Sophie Hilgard}{Discrete Models}
+\lecture{1}{September 6}{Sasha Rush}{Anna Sophie Hilgard, Diondra Peck}{Discrete Models}
 
 \begin{itemize}
 \item Take values from a countable set, e.g. \{0,1\}, \{cold, flu, asthma\}
@@ -27,7 +27,7 @@ $p(\theta) = 0.1 \cdot \delta(\theta = 0.4)  + 0.8 \cdot \delta(\theta = 0.5) + 
 \subsubsection*{Likelihood}
 Likelihood: $p(\text{data}|\text{parameters})$
 
-Ex: $p(\text{coin\_flips}|\theta) = \textrm{Bin}(N_1 | N, \theta) = {N \choose N_1} \theta^{N_1} (1-\theta)^{N-N_1}$\\
+Ex: $p(\text{coin flips}|\theta) = \textrm{Bin}(N_1 | N, \theta) = {N \choose N_1} \theta^{N_1} (1-\theta)^{N-N_1}$\\
 Where $N = N_0 + N_1 =$ number of flips\\
 Note that the last term, the ``score", is the only term that depends on $\theta$.
 
@@ -46,20 +46,20 @@ $\frac{d}{d\theta} = \frac{N_1}{\theta} + \frac{N_0}{1-\theta} \cdot ( -1)  \rig
 \begin{itemize}
 \item Note that Inference != Decision Making. If we asked you to make a bet on the coin, based on this you could either
 \begin{enumerate}
-\item Always take heads if $\theta > .5$. In this case, $p(win) = \theta$
-\item Take heads with probability = $\theta$. In this case, $p(win) = \theta^2 + (1-\theta)^2$ [p(is heads) * p(choose heads) + ...]
+\item Always take heads if $\theta > .5$. In this case, $p(\text{win}) = \theta$
+\item Take heads with probability = $\theta$. In this case, $p(\text{win}) = \theta^2 + (1-\theta)^2$ [p(\text{is heads}) * p(\text{choose heads}) + ...]
 \end{enumerate}
 For $\theta = .6$, the win probabilities are .6 and .52, respectively. 
 \end{itemize}
 
 \subsubsection*{Maximizing the Posterior (MAP)}
-Bayes Rule : $p(\theta|data) \propto p(data|\theta) p(\theta)$
+Bayes Rule : $p(\theta|\text{data}) \propto p(\text{data}|\theta) p(\theta)$
 \begin{itemize}
-\item Posterior: $p(\theta | x)$
-\item Likelihood: $p(x | \theta)$
+\item Posterior: $p(\theta | \text{x})$
+\item Likelihood: $p(\text{x} | \theta)$
 \item Prior: $p(\theta)$
 \end{itemize}
-$\theta_{MAP} = \textrm{argmax}_{\theta} \; p(\theta | x) = \textrm{argmax}_{\theta}  \;\textrm{log}\left[p(x | \theta) p(\theta)\right]$\\
+$\theta_{MAP} = \textrm{argmax}_{\theta} \; p(\theta | \text{x}) = \textrm{argmax}_{\theta}  \;\textrm{log}\left[p(\text{x} | \theta) p(\theta)\right]$\\
 
 Ex:\\
 $p(\theta=0.4|N_0,N_1) \propto {N \choose N_1} (.4)^{N_1}(1-.4)^{N_0} (0.1)$
