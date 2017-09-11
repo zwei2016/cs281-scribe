@@ -8,8 +8,9 @@
 \lecture{1}{September 6}{Sasha Rush}{Anna Sophie Hilgard, Diondra Peck}{Discrete Models}
 
 \begin{itemize}
-\item Take values from a countable set, e.g. \{0,1\}, \{cold, flu, asthma\}
-\item We will use simple discrete models to develop our tactics such as marginalization and conditioning. Today: coins.
+\item Discrete models take values from a countable set, e.g. \{0,1\}, \{cold, flu, asthma\} and are simpler than continuous models.
+\item We will use simple discrete models to develop our tactics such as marginalization and conditioning. 
+\item Today, we will focus coins as a real-world example.
 \end{itemize}
 
 \subsection{Bernoulli model}
@@ -17,17 +18,24 @@ The likelihood is of the form $p(\text{heads}) = \theta$.
 
 \subsubsection*{Easy Prior}
 Assume we know the coin came from one of 3 unknown manufacturers (Later, we'll have mixture model estimation, but for now assume these probabilities come from an oracle.)\\
-$\theta = 0.4$ with probability .1\\
-$\theta = 0.5$ with probability .8\\
-$\theta = 0.6$ with probability .1
 
-$p(\theta) = 0.1 \cdot \delta(\theta = 0.4)  + 0.8 \cdot \delta(\theta = 0.5) + 0.1 \cdot \delta(\theta = 0.6)$
+\begin{enumerate}
+\item $\theta = 0.4$ with probability .1 \\
+\item $\theta = 0.5$ with probability .8 \\
+\item $\theta = 0.6$ with probability .1 \\
+\end{enumerate}
 
+\begin{align*}
+p(\theta) = 0.1 \cdot \delta(\theta = 0.4)  + 0.8 \cdot \delta(\theta = 0.5) + 0.1 \cdot \delta(\theta = 0.6)
+\end{align*}
 
 \subsubsection*{Likelihood}
-Likelihood: $p(\text{data}|\text{parameters})$
+Likelihood = $p(\text{data}|\text{parameters})$. For the coin example, 
 
-Ex: $p(\text{coin flips}|\theta) = \textrm{Bin}(N_1 | N, \theta) = {N \choose N_1} \theta^{N_1} (1-\theta)^{N-N_1}$\\
+\begin{align*}
+p(\text{coin flips}|\theta) = \textrm{Bin}(N_1 | N, \theta) = {N \choose N_1} \theta^{N_1} (1-\theta)^{N-N_1}\\
+\end{align*}
+
 Where $N = N_0 + N_1 =$ number of flips\\
 Note that the last term, the ``score", is the only term that depends on $\theta$.
 
