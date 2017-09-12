@@ -33,32 +33,31 @@ p(\theta) = 0.1 \cdot \delta(\theta = 0.4)  + 0.8 \cdot \delta(\theta = 0.5) + 0
 Likelihood = $p(\text{data}|\text{parameters})$. For the coin example, 
 
 \begin{align*}
-p(\text{coin flips}|\theta) = \textrm{Bin}(N_1 | N, \theta) = {N \choose N_1} \theta^{N_1} (1-\theta)^{N-N_1}\\
+p(\text{coin flips}|\theta) = \textrm{Bin}(N_1 | N, \theta) = {N \choose N_1} \theta^{N_1} (1-\theta)^{N-N_1} && \text{where $N = N_0 + N_1 =$ number of flips} \\
 \end{align*}
 
-Where $N = N_0 + N_1 =$ number of flips\\
-Note that the last term, the ``score", is the only term that depends on $\theta$.
+\noindent Note that the last two terms, the "score", is our focus since they are the only terms that depend on $\theta$. The first term normalizes the distribution. \\
 
 \subsection{Inference}
-Inference 1: $p(\theta|x)$ ($x = N_0, N_1$)
+
+Inference 1: $p(\theta|x)$ ($x \in N_0, N_1$) \\
+How can we estimate $\theta$? \\
 
 \subsubsection*{Maximum Likelihood Estimation (MLE)}
-$\theta_{MLE} = \textrm{argmax}_{\theta} \; p(N_0,N_1 | \theta) = \textrm{argmax}_{\theta}  \;\textrm{log}\left[p(N_0,N_1 | \theta)\right]$
 
-$\theta_{MLE} = \textrm{argmax}_{\theta} \;\textrm{log}{N \choose N_1} + N_1 \textrm{log} \theta + N_0  \textrm{log} (1-\theta)$
+\begin{align*}
+\theta_{MLE} &= \textrm{argmax}_{\theta} \; p(N_0,N_1 | \theta) = \textrm{argmax}_{\theta}  \;\textrm{log}\left[p(N_0,N_1 | \theta)\right] \\
+\theta_{MLE} &= \textrm{argmax}_{\theta} \;\textrm{log}{N \choose N_1} + N_1 \textrm{log} \theta + N_0  \textrm{log} (1-\theta) && \text{Because the first term is not a function of $\theta$, we can ignore it.} \\
+\frac{d}{d\theta} &= \frac{N_1}{\theta} + \frac{N_0}{1-\theta} \cdot ( -1)  \rightarrow \theta_{MLE} = \frac{N_1}{N_0 + N_1} \\
+\end{align*}
 
-Because the first term is not a function of $\theta$, we can ignore it.
-
-$\frac{d}{d\theta} = \frac{N_1}{\theta} + \frac{N_0}{1-\theta} \cdot ( -1)  \rightarrow \theta_{MLE} = \frac{N_1}{N_0 + N_1}$
-
-\begin{itemize}
-\item Note that Inference != Decision Making. If we asked you to make a bet on the coin, based on this you could either
+\noindent Note that Inference $\neq$ Decision Making. If we asked you to make a bet on the coin, based on this you could either
 \begin{enumerate}
 \item Always take heads if $\theta > .5$. In this case, $p(\text{win}) = \theta$
 \item Take heads with probability = $\theta$. In this case, $p(\text{win}) = \theta^2 + (1-\theta)^2$ [p(\text{is heads}) * p(\text{choose heads}) + ...]
 \end{enumerate}
-For $\theta = .6$, the win probabilities are .6 and .52, respectively. 
-\end{itemize}
+If $\theta$ = 0.6, for option 1, p(\text{win}) = $\theta$ = 0.6. For option 2, p(\text{win}) = $\theta^2 + (1 - \theta)$ = 0.52. In this case, the additional information used in the calculation of option 2 does not result in a better decision.
+
 
 \subsubsection*{Maximizing the Posterior (MAP)}
 Bayes Rule : $p(\theta|\text{data}) \propto p(\text{data}|\theta) p(\theta)$
@@ -67,80 +66,102 @@ Bayes Rule : $p(\theta|\text{data}) \propto p(\text{data}|\theta) p(\theta)$
 \item Likelihood: $p(\text{x} | \theta)$
 \item Prior: $p(\theta)$
 \end{itemize}
-$\theta_{MAP} = \textrm{argmax}_{\theta} \; p(\theta | \text{x}) = \textrm{argmax}_{\theta}  \;\textrm{log}\left[p(\text{x} | \theta) p(\theta)\right]$\\
 
-Ex:\\
-$p(\theta=0.4|N_0,N_1) \propto {N \choose N_1} (.4)^{N_1}(1-.4)^{N_0} (0.1)$
+\begin{align*}
+\theta_{MAP} = \textrm{argmax}_{\theta} \; p(\theta | \text{x}) = \textrm{argmax}_{\theta}  \;\textrm{log}\left[p(\text{x} | \theta) p(\theta)\right] && \text{from Bayes' Rule:  $p(\theta | \text{x}) \propto p(\text{x} | \theta) p(\theta)$} \\
+\end{align*}
 
-$p(\theta=0.45|N_0,N_1) = 0 $ (Due to the sparsity of the prior)\\
+\noindent Consider an example 
 
-MAP = MLE when we have a uniform prior
+\begin{align*}
+p(\theta=0.4|N_0,N_1) &\propto {N \choose N_1} (.4)^{N_1}(1-.4)^{N_0} (0.1) \\
+p(\theta=0.45|N_0,N_1) &= 0 && \text{Due to the sparsity of the prior - similar result for $\theta$ = 0.5 and 0.6} \\
+\end{align*}
+
+
+\noindent $\theta_{MAP} = \theta_{MLE}$ when we have a uniform prior since the MLE calculation does not explicitly factor a prior into its calculation.
 
 \subsubsection*{Full Posterior}
 
-\begin{itemize}
-\item Partition/Marginal: $p(N_0,N_1) = \int_\theta p(N_0,N_1,\theta)$. Note this is evil and hard to compute
-\end{itemize}
-$p(\theta|N_0,N_1) = \frac{p(x|\theta) p(\theta)}{p(N_0,N_1)}$
+Partition or Marginal Likelihood: $p(N_0,N_1) = \int_\theta p(N_0,N_1,\theta)$. 
+\begin{align*}
+p(\theta|N_0,N_1) &= \frac{p(x|\theta) p(\theta)}{p(N_0,N_1)} && \text{Note that $p(N_0,N_1)$ is a very difficult term to compute.}\\
+\end{align*}
 
 \subsubsection*{Beta Prior}
 
-Beta Distribution: $p(\theta|\alpha_0,\alpha_1) = \frac{\Gamma(\alpha_0 + \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{\alpha_1-1} (1-\theta)^{\alpha_0-1}$ 
+\begin{align*}
+p(\theta|\alpha_0,\alpha_1) = \frac{\Gamma(\alpha_0 + \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{\alpha_1-1} (1-\theta)^{\alpha_0-1}  && \text{support $\in [0,1]$} \\
+\end{align*}
 
-From the image of the beta function for different parameters, we can see that it can ether be balanced, humped to one side, or tend toward infinity on one side or the other.
+\noindent From the image of the beta function for different parameters, we can see that it can ether be balanced, skewed to one side, or tend toward infinity on one side. \\
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{./beta.png}
 \caption{Beta Params}
 \end{figure}
 
-With a beta prior:  $p(\theta|N_0,N_1) = \frac{\Gamma(\alpha_0 + \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{\alpha_1-1} (1-\theta)^{\alpha_0-1} \theta^{N_1}(1-\theta)^{N_0} \cdot \textrm{(constant normalizer w.r.t} \theta) $
+\noindent With a beta prior: 
+\begin{align*}
+p(\theta|N_0,N_1) &= \frac{\Gamma(\alpha_0 + \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{\alpha_1-1} (1-\theta)^{\alpha_0-1} \theta^{N_1}(1-\theta)^{N_0} \cdot \textrm{(constant normalization term w.r.t $\theta$)} 
+\end{align*}
 
-The key insight is that we get additive terms in the exponent and the resulting distribution looks like another beta. The prior ``counts'' (pseudocounts) from the hyperparameters can be interpreted as counts we have beforehand
+\noindent The key insight is that we get additive terms in the exponent and the resulting distribution looks like another beta. The prior "counts'' (pseudocounts) from the hyperparameters can be interpreted as counts we have beforehand. \\
 
-$p(\theta|N_0,N_1) = \frac{\Gamma(\alpha_0 + \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{N_1 + \alpha_1-1} (1-\theta)^{N_0 + \alpha_0-1} \cdot \textrm{(constant)}$ 
+\begin{align*}
+p(\theta|N_0,N_1) = \frac{\Gamma(\alpha_0 + \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{N_1 + \alpha_1-1} (1-\theta)^{N_0 + \alpha_0-1} \cdot \textrm{(constant normalization term w.r.t $\theta$)} \\
+\end{align*}
 
-To make this distribution sum to 1, use the known beta normalizer
+\noindent To make this distribution sum to 1, use the known beta normalizer \\
 
-$p(\theta|N_0,N_1) = \frac{\Gamma(\alpha_0 + \alpha_1 + N_0 + N_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)\Gamma(N_0)\Gamma(N_1)} \theta^{N_1 + \alpha_1-1} (1-\theta)^{N_0 + \alpha_0-1} $ 
+\begin{align*}
+p(\theta|N_0,N_1) = \frac{\Gamma(\alpha_0 + \alpha_1 + N_0 + N_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)\Gamma(N_0)\Gamma(N_1)} \theta^{N_1 + \alpha_1-1} (1-\theta)^{N_0 + \alpha_0-1} \sim \textrm{Beta}(\theta | N_0 + \alpha_0, N_1 + \alpha_1) && \text{posterior distribution} \\
+\end{align*}
 
-$p(\theta|N_0,N_1) \sim \textrm{Beta}(\theta | N_0 + \alpha_0, N_1 + \alpha_1)$ is the posterior distribution.
+\noindent The mode of the Beta gives us back $\theta_{MAP}$, but with additional information about the shape of the distribution. \\
+What does the prior that tends to infinity at 1 imply? That in the absence of other information, the coin is definitely heads. \\
 
-\begin{itemize}
-\item The mode of the Beta gives us back the MAP, but we additionally now have information about the shape.
-\item What does the prior that tends to infinity at 1 imply? That in the absence of other information, the coin is definitely heads. 
-\end{itemize}
 
 \subsubsection*{Predictive Distribution}
 
-$p(\hat{x}| N_0, N_1) = \int_\theta p(x|\theta, N_0, N_1) p(\theta | N_0, N_1) d\theta$
+\begin{align*}
+p(\hat{x}| N_0, N_1) &= \int_\theta p(x|\theta, N_0, N_1) p(\theta | N_0, N_1) d\theta \\
+&= \int_\theta \theta p(\theta | N_0, N_1) d\theta \\
+&= \E_{\theta \sim p(\theta|N_0, N_1)} \theta \\
+\end{align*}
 
-$p(\hat{x}| N_0, N_1) = \int_\theta \theta p(\theta | N_0, N_1) d\theta$
 
-$p(\hat{x}| N_0, N_1) = \E_{\theta \sim p(\theta|N_0, N_1)} \theta$ (The expectation under the posterior of $\theta$. This is the mean of the Beta distribution. Feel free to prove it as an exercise!)
+ \noindent This is the expectation under the posterior of $\theta$ which is the  mean of the Beta distribution. Feel free to prove this as an exercise. \\
 
-\subsubsection*{Normalizing Term / Marginal (Likelihood)}
-$p(N_0, N_1) = \int_\theta p(x_1, \hdots x_n | \theta) p(\theta) d\theta$ \\
-$p(N_0, N_1) = \int_\theta \frac{\Gamma( \alpha_1 +  \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{\alpha_1 + N_1 -1} (1-\theta)^{\alpha_0+N_0-1} $
+\subsubsection*{Marginal Likelihood}
 
-The first term can be moved outside, as it does not depend on $\theta$. Then we know what the integral of the rest should be because we know how to make the distribution sum to 1.
+\begin{align*}
+p(N_0, N_1) &= \int_\theta p(x_1, \hdots x_n | \theta) p(\theta) d\theta \\
+&= \int_\theta \frac{\Gamma( \alpha_1 +  \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \theta^{\alpha_1 + N_1 -1} (1-\theta)^{\alpha_0+N_0-1}
+\end{align*}
 
-$p(N_0, N_1) = \frac{\Gamma( \alpha_1 +  \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \frac{\Gamma(N_0 + \alpha_0)\Gamma(N_1 + \alpha_1}{\Gamma(N_0 + N_1 + \alpha_0 + \alpha_1}$
+\noindent The first term can be moved outside, as it does not depend on $\theta$. After introducing our normalization term and making the distribution insidesum to 1,
+
+\begin{align*}
+p(N_0, N_1) = \frac{\Gamma( \alpha_1 +  \alpha_1)}{\Gamma(\alpha_0)\Gamma(\alpha_1)} \frac{\Gamma(N_0 + \alpha_0)\Gamma(N_1 + \alpha_1)}{\Gamma(N_0 + N_1 + \alpha_0 + \alpha_1)}
+\end{align*}
 
 \subsection{Extensions on the Coin Flip Model: Super Coins}
 \begin{itemize}
-\item Many coins and they're correlated (Models of binary data)
-\item Many-sided coins aka dice (Models of categorical data)
+\item Many correlated coins: models of binary data, important for discrete graphical models
+\item Many-sided coins aka dice: models of categorical data, generalization of Bernoulli
 \end{itemize}
 
-\subsubsection*{Bernoulli}
-$\textrm{Ber}(x|\theta) = \theta^{x}(1-\theta)^x$
-\subsubsection*{Categorical}
-$\textrm{Cat}(x|\theta) = \prod_k\theta_k^{x_k}$
-\subsubsection*{Multinomial}
-$\textrm{Multi}(x|\theta) = \frac{(\sum x_k) !}{\prod_k x_k!}\prod_k\theta_k^{x_k}$
-\subsubsection*{Dirichlet}
-$\textrm{Dir}(x|\alpha) = \frac{\Gamma(\sum \alpha_k)}{\prod \Gamma(\alpha_k)}\prod_k\theta_k^{\alpha_k-1}$
+\subsection{Other Distributions}
+
+\begin{align*}
+\textrm{Bernoulli}(x|\theta) &= \theta^{x}(1-\theta)^x \\
+\textrm{Categorical}(x|\theta) &= \prod_k\theta_k^{x_k} && \text{generalization of Bernoulli} \\
+\textrm{Multinomial}(x|\theta) &= \frac{(\sum x_k) !}{\prod_k x_k!}\prod_k\theta_k^{x_k} && \text{generalization of Binomial} \\
+\textrm{Dirichlet}(x|\alpha) &= \frac{\Gamma(\sum \alpha_k)}{\prod \Gamma(\alpha_k)}\prod_k\theta_k^{\alpha_k-1} && \text{generalization of Beta, often used as a prior} \\
+\end{align*}
+
+\noindent Note that the Dirichlet distribution is often used as a prior and is the conjugate prior of the Categorical and Multinomial distributions.
 % **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 
 \subsection{Example notebook}
