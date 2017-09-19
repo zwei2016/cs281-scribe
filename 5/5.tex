@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{../common}
+\usepackage{../pagesetup}
+\usepackage{xcolor}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+\renewcommand{\v}{\boldsymbol}
+\newcommand{\argmax}{arg\,max}
+\begin{document}
+
+\lecture{5}{September 18}{Sasha Rush}{Demi Guo, Artidoro Pagnoni, Luke Melas-Kyriazi }{Linear Classification}
+
+\subsection{Classification Introduction}
+    Last time we saw linear regression. In linear regression we were predicting $y \in \mathbb{R}$, in classification instead we deal with a discrete set, for example $y \in \{ 0,1\}$ or $y\in \{1,...,C\}$. This distinction only matters for this lecture, starting from next class we will generalize the topics and treat them as the same thing.\\
+    Among the many applications, linear classification is used in sentiment analysis, spam detection, and facial and image recognition.\\
+    We will use generative models of the data, which means that we will model both the $x$ and the $y$ explicitly, and we are not keeping $x$ fixed. In the case of the spam filter earlier, $x$ is the email body, and $y$ is the label $\{$spam, not spam$\}$. A generative model of the email and labels, we would model the distribution of $x$, of the text in the email itself, and not only the distribution of the category $y$.\\
+    We will explore the basic method of Na\"ive Bayes in detail. Even with a very simple method like Na\"ive Bayes with basic features it is possible to perform extremely well on many classification tasks when large training data sets are available. For example, this simple model performs almost as well (one percent point difference) as very complex methods on spam detection.
+
+\subsection{Na\"ive Bayes}
+    Note that the term "Bayes" in Na\"ive Bayes (NB) does not have to do with Bayesian modeling, or the presence of priors on parameters. We won't have any priors for the moment.  General Na\"ive Bayes takes the following form:
+    \begin{align}
+        y &\sim Cat(\pi) ~~~~~ \text{[class distribution]}\\
+        x_j|y &\sim \text{\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore\textunderscore}      ~~~~~~    \text{[class conditional]}
+    \end{align}
+    Where $y$ is the class and comes from a categorical distribution, and $x_j$ is a dimension of the input $x$.\\
+    In Na\"ive Bayes, the form of the class distribution is fixed and parametrized independently from the class conditional distribution. The "Na\"ive" term in "Na\"ive Bayes" precisely refers to the conditional independence between $y$ and $x_j|y$. Depending of what the data looks like we can choose a different form for the class conditional distribution. \\
+    Here we present three possible choices for the class conditional distribution:
+
+    \subsubsection{Multivariate Bernoulli Na\"ive Bayes:}
+        \begin{align}
+            x_j|y &\sim Ber(\mu_{jc}) ~~~~~~\text{if $y=c$}
+        \end{align}
+        Here $y$ takes values in a set of classes, and $\mu_{jc}$ is a parameter associated with a specific feature (or dimension) in the input and a specific class. We use MV Bernoulli when we only allow two possible values for each feature, therefore $x_j|y$ follows a Bernoulli distribution.\\
+        We can think of $x$ as living in a hyper cube, with each dimension $j$ having an associated $\mu$ for each class $c$. From here the name multivariate Bernoulli distribution. 
+    
+    \subsubsection{Categorical Na\"ive Bayes:}
+        \begin{align}
+            x_j|y &\sim Cat(\mu_{jc}) ~~~~~~\text{if $y=c$}
+        \end{align}
+        We use the Categorical Na\"ive Bayes when we allow different classes for each feature $j$, so $x_j|y$ follows a catergorical distribution.
+        
+    \subsubsection{Multivariate Normal Na\"ive Bayes}
+        \begin{align}
+            \v x| \v y &\sim \mathcal{N}(\v \mu_c, \v \Sigma_{diag}^c)
+        \end{align}    
+        Note that here we use $\v x$ vector and not a specific feature. Since we impose that $\v \Sigma^c$ is a diagonal matrix, we have no covariance between features, so this comes down to having an independent multivariate normal for each feature (or dimension) of the input. This is also required by the "Na\"ive" assumption of conditional independence. We would use  MVN Na\"ive Bayes when the features take continuous values in $\mathbb{R}$. 
+        
+\subsection{General Na\"ive Bayes}
+    We consider the data points $\{(\v x_n,y_n)\}$, without specifying a particular generative model. The likelihood of each data point is:
+    \begin{align}
+        p(\v x_n,y_n | \text{param}) &= p(y_n|\v \pi)\prod_j p(x_{nj}|y_n, \text{param})\\
+        &= \prod_c \pi_c^{(y_n = c)} \prod_j \prod_c p(x_{nj}|y_n)^{(y_n=c)}
+    \end{align}
+    Where in equation (5.6) we assume conditional independence ("Na\"ive" assumption). The term $p(x_{nj}|y_n)$ depends on the generative model used for $x$ and also on the class $y_n$.\\
+    We can then solve for the parameters maximizing the likelihood, which is equivalent to maximizing the $\log$ likelihood.
+    \begin{align}
+    		&\arg\!\max_{(\v \pi,\v \mu)} \sum_n \log p(\v x_n , y_n| \text{param})\\
+    		=~ & \arg\!\max_{(\v \pi,\v \mu)} \sum_c N_c \log \pi_c + \sum_i\sum_c\sum_{n:y_n=c}\log p(x_{nj}|y_n)\\
+    	    =~ & \left(\arg\!\max_{(\v \pi,\v \mu)} \sum_c N_c \log \pi_c\right) + \left(\arg\!\max_{(\v \pi,\v \mu)} \sum_i\sum_c\sum_{n:y_n=c}\log p(x_{nj}|y_n)\right)
+    \end{align}
+    Where $N_c = \sum_n \mathbb{1}(y_n = c)$, and $N =$ number of data points.\\
+    This factors into two parts (5.10), the first only depending on $\v\pi$ the other is the MLE for the class condition distribution on each feature or dimension of the input. This factorization allows to solve for the maximizing $\v\pi$ and the maximizing parameters for the class conditional separately.\\
+    For example, if we use a Multivariate Bernoulli Na\"ive Bayes generative model we would get the following parameters from MLE:
+    \begin{align}
+    		\pi_c &= \frac{N_c}{N}\\
+    		\mu_{jc} &= \frac{\sum_{n:y_n=c}x_{nj}}{N_c} = \frac{N_{cj}}{N_c}
+    \end{align}
+    Again, where $N_c = \sum_n \mathbb{1}(y_n = c)$, $N_{cj} = \sum_n \mathbb{1}(y_n = c) x_{nj}$ and $N =$ number of data points.\\
+\end{document}
+
+
+
