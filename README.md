@@ -8,4 +8,4 @@ Lecture 3 - [Multivariate Normal Distributions](https://github.com/harvard-ml-co
 
 Lecture 4 - [Linear Regression](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/4/4.pdf)
 
-Lecture 4 - [Linear Classification](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/5/5.pdf)
+Lecture 5 - [Linear Classification](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/5/5.pdf)
