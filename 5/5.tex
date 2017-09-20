@@ -67,6 +67,111 @@
     		\mu_{jc} &= \frac{\sum_{n:y_n=c}x_{nj}}{N_c} = \frac{N_{cj}}{N_c}
     \end{align}
     Again, where $N_c = \sum_n \mathbb{1}(y_n = c)$, $N_{cj} = \sum_n \mathbb{1}(y_n = c) x_{nj}$ and $N =$ number of data points.\\
+\subsection{Bayesian Naive Bayes: Prior}
+Here, instead of working with a single distribution, we are working with multiple distributions.\\
+For simplicity, let's use the following factored \textbf{prior}: \\ 
+\[p(\pi, \mu) = p(\pi) \prod_j \prod_c p(\mu_{jc})\] 
+where $p(\pi)$ represents the prior on class distribution and $\prod_j \prod_c p(\mu_{jc})$ represents prior on class conditional distribution. \\
+Now, \textbf{what prior should we use?}
+\begin{enumerate}
+    \item $\pi$: Dirchlet (goes with Categorical)
+    \item $\mu_{jc}$: 
+        \begin{enumerate}
+            \item Beta (goes with Bernoulli)
+            \item Dirichlet (goes with Categorical)
+            \item Normal (goes with Normal)
+        \end{enumerate}
+        Here, what distribution we choose depends on our choice of class conditional distribution.
+\end{enumerate} 
+Recall that we want to use conjugate priors to have a natural update (that's why we pair them up!). By using conjugate priors, we will have: \\
+    \[ p(\pi | data) = Dir(N_1 + \alpha_1, \cdots, N_c + \alpha_c) \]
+    \[ p(\mu_{jc} | data) = \beta((N_c - N_{jc}) + \beta_0, N_c + \beta_1) \]
+\subsection{Intuition}
+You can think of $\alpha$ and $\beta$ above as initial pseudocounts. 
+Those pseudocounts give nonzero probability to features we haven't seen before, which is crucial for NLP. For unseen features, you could have a pseudocount of 1 or 0.5 (Laplace term) or something.\\ 
+Because of this property, Bayesian model helps prevents overfitting by introducing such priors:\\
+Consider the spam email classification problem mentioned before.Say the word "subject" (call it feature j) always occurs in both classes ("spam" and "not spam"), so we estimate $\hat{\theta_{jc}} = 1$ (we overfit!) What will happen if we encounter a new email which does not have this word in it? Our algorithm will crash and burn! This is another manifestation of the black swan paradox discussed in Book Section 3.3.4.1. Note that this will not happen if we introduce pseudocounts to all features! 
+\subsection{Posterior Predictive}
+\[p(\hat{y}, \hat{x} | data) = (integrate\  over\  parameters) \] 
+\[ {\pi_c}^{MAP} = \frac{N_c + \alpha_c}{N + \sum_c \alpha_c} (Dirichlet\  MAP) \] 
+\[{\mu_{jc}}^{MAP} = \frac{N_{jc} + \beta_1}{N_c + \beta_1 + \beta_0} (Beta\  MAP)\] 
+(How to dervie this ? Good exercise!)
+\subsection{More on Predictive}
+Now, let's consider a little bit more about what's happening in our predictive.\\
+Consider the email spam classification problem: given some features of an email, we want to predict if the email is a spam or not a spam.\\
+We have:\\ 
+\begin{align}
+    p(y = c | x, data) &\propto \pi_c \prod_j p(x_j|y) (\text{try to generate observatiosn from class}) \\
+    &= \pi_c \prod_j \mu_{jc}^{x_j} (1-\mu_{jc})^{(1-x_j)} (\text{informal parametrization})\\
+    &\text{Take exp of log}\\
+    &= exp([log \pi_c + \sum_j x_j log \mu_{jc} + (1-x_j) log(1 - \mu_{jc})]\\
+    &= exps([log \pi_c + \sum_j log(1-\mu_{jc}) + \sum_j x_j log\frac{\mu_{jc}}{1-\mu_{jc}}]
+\end{align}
+where the first two term $log \pi_c + \sum_j log(1-\mu_{jc})$ is a constant (we call it $b$ aka.bias), and the last term $\sum_j x_j log\frac{\mu_{jc}}{1-\mu_{jc}}$ is linear (we call it $\theta$). \\
+\subsection{Multivariate Bernoulli Naive Bayes}
+For Multivariate Bernoulli NB, we will have: \\ 
+\begin{align}
+    \theta_{jc} &= log \frac{\mu_{jc}}{1 - \mu_{jc}} \\
+    b_c &= log \pi_c + log(1- \mu_{jc})\\
+\end{align}
+So, we have:
+\begin{align}
+    p(y=c|x) \propto exp(\theta_c^T x + b_c)
+\end{align}
+Thus, in order to determine which class ("spam" or "not spam"), for each class we simply compute a linear function with respect to x, and compare the two. \\ 
+Our $\theta x + b$ is going to be associated with a linear separator of the data.  Even better, for prediction, we can simply compute $\theta$ and $\beta$ (as shown above) using closed form for both MAP and MLE cases.
+
+\subsection{The Sigmoid Function}
+Before proceeding, we should name our variables to speak about them more easily.  \\ \\
+We call $\mu$ the "informal parameters" and $\theta$ the "scores." In the case of a Multivariate Bernouli model, we have the map $\theta_{jc} =  \log \frac{\mu_{jc}}{1-\mu_{jc}}$, which we call the "log odds."  \\ \\
+We may also invert this relationship to find $\mu$ as a function of $\theta$: 
+\begin{align}
+    \theta = \log \frac{\mu}{1-\mu} \implies \mu = \frac{e^{\theta}}{1 + e^{\theta}} = \frac{1}{1 + e^{-\theta}} = \sigma(\theta)
+\end{align}
+We denote this function $\sigma(\theta)$ as the sigmoid function.  \\ \\
+The sigmoid function is a map from the real line to the interval $[0,1]$, so is useful as a representation of probability. It is also a common building block in constructing neural networks, as we will see later in the course. 
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{./sigmoid.png}
+\caption{The Sigmoid Function}
+\end{figure}
+\subsection{The Softmax Function}
+We will now return to the predictive $p(y = c | x) \propto \exp(\theta_c^T x + c_c)$ to try to compute the normalizer $Z$: 
+\begin{align}
+    p(y=c|x) = \frac{1}{Z} exp(\theta_c^T x + b_c)
+\end{align}
+In general, we can compute the normal by summing over all our classes.
+\begin{align}
+    Z(\theta) = \sum_{c'} = exp(\theta_{c'}^T x + b_{c'})
+\end{align}
+In practice, this summation is often computationally expensive. However, it is not necessary to compute this sum if we are only interested in the most likely class label given an input.  \\ \\ 
+We call the resulting probability the softmax function: 
+\begin{align} 
+    \text{softmax}(z)_i = \frac{ exp(z_i) }{ \sum_{i'} exp(z_{i'}) }
+\end{align}
+This function generalizes the sigmoid function to multiple classes/dimensions. 
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{./softmax.png}
+\caption{The Softmax Function}
+\end{figure}
+We call it the "softmax" because we may think of it as a smooth, differentiable version of the function which simply returns $1$ for the most likely class. 
+\subsection{Discriminative Classification}
+We may apply the mathematical tools developed in the generative classification setting discussed above to perform discriminative classification. In discriminative classification, we assume that our inputs $x$ are fixed, rather than coming from some probability distribution.  \\
+We take the maximum likelihood estimate, as in linear regression, given that $p(y = c | x) \propto exp(\theta_c^T x)$: 
+\begin{align} 
+    MLE: \arg\!\max_{\theta} p(y | x, \theta) = \arg\!\max_{\theta} \sum_n \log \text{softmax} (\theta_c^T x_n) c_n
+\end{align}
+What are the advantages and disadvantages of this approach? The primary disadvantage compared to methods we have seen earlier is that this maximum likelihood estimate has \textit{no closed form}. It is also not clear how we might incorporate our prior (although there is recent work in this area). On the other hand, this equation is convex and it is easy (at least mathematically, not necessarily computationally) to compute gradients, so we may use gradient descent. 
+\begin{align} 
+    \frac{d (\cdot)}{d \theta_c} = \sum_n x_n \cdot \begin{cases} 1 - \text{softmax}(\theta_c ^T x) & \text{ if } y_n = c \\ \text{softmax}(\theta_c ^T x) & \text{otherwise} \end{cases} 
+\end{align}
+This model is known as \textbf{logistic regression} (even though it is for classification, not regression) and is widely used in practice.  \\ \\
+\textbf{More Resources on Optimization}
+\begin{itemize}
+    \item Convex Optimization by Lieven Vandenberghe and Stephen P. Boyd
+\end{itemize}
+
 \end{document}
 
 
