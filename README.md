@@ -11,3 +11,5 @@ Lecture 4 - [Linear Regression](https://github.com/harvard-ml-courses/cs281-scri
 Lecture 5 - [Linear Classification](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/5/5.pdf)
 
 Lecture 6 - [Exponential Families](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/6/6.pdf)
+
+Lecture 7 - [Neural Networks](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/7/7.pdf)
