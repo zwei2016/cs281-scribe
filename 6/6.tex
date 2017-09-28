@@ -6,10 +6,9 @@
 
 
 \begin{document}
-%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
 \lecture{6}{September 20}{Sasha Rush}{Meena Jagadeesan, Yufeng Ling, Tomoka Kan, Wenting Cai}{Exponential Families}
 
-\section{Introduction}
+\subsection{Introduction}
 (Wainwright and Jordan (textbook) presents a more detailed coverage of the material in this lecture.)
 
 \medskip
@@ -27,7 +26,7 @@
 \end{center}
 We will focus on coming up with a general form for Discrete and MVN through exponential families. We will also come up with a general form for classification and linear regression through generalized linear models. 
 
-\section{Definition of Exponential Family}
+\subsection{Definition of Exponential Family}
 The definition is
 \begin{align*}
 p(x \mid \theta(\mu)) &= \frac{1}{Z(\theta)} h(x) \exp\{\theta^T \phi(x)\} \\
@@ -47,9 +46,9 @@ where
 
 \noindent Note that there is ``minimal form'' and ``overcomplete form''.
 
-\section{Examples of Exponential Families}
+\subsection{Examples of Exponential Families}
 
-\subsection{Bernoulli/Categorical}
+\subsubsection{Bernoulli/Categorical}
 First, we consider the Bernoulli as an exponential family. Like last lecture, we rewrite the distribution as an $\exp$ of $\log$.
 
 \begin{align*}    
@@ -86,7 +85,7 @@ where $\sum_{c} \mu_c = 1$.
 
 Side note: Writing out in overcomplete form usually comes with some restraints.
 
-\subsection{Univariate Gaussians}
+\subsubsection{Univariate Gaussians}
 
 \begin{align*}
 \mathcal{N} ( x \mid \mu, \sigma^2) &= (2 \pi \sigma^2)^{1/2} \exp \{ -\frac{1}{2\sigma^2} (x - \mu)^2 \} \\
@@ -105,10 +104,10 @@ A(\mu, \sigma^2) &= \frac{1}{2}\log(2\pi\sigma^2) + \frac{1}{2\sigma^2}\mu^2
 A(\theta) &= - \frac12 \log( -2 \theta_2) - \frac{\theta_1^2}{4 \theta_2}
 \end{align*}
 
-\subsection{Bad distributions}
+\subsubsection{Bad distributions}
 Two simple distributions that do not fit this form are the uniform distribution $\text{Uniform}(0,1)$ (check this as an exercise), and the Student-T distribution.
 
-\section{Properties of Exponential Families}
+\subsection{Properties of Exponential Families}
 Most inference problems involve a mapping between natural parameters and mean parameters, so this is a natural framework. 
 
 
@@ -169,7 +168,7 @@ The above two distributions have the same sufficient statistics -- so we have a 
 
 \end{proof}
 
-\section{Definition of Generalized Linear Models}
+\subsection{Definition of Generalized Linear Models}
 
 While exponential families generalize $p(x)$, GLMs generalize $p(y|x)$.
 
@@ -184,7 +183,7 @@ $$
 x \overset{g^{-1}(w^T x + b)}{\longrightarrow} \mu \to \theta \to p(y \mid x).
 $$
 
-\section{Examples of Generalized Linear Models}
+\subsection{Examples of Generalized Linear Models}
 We present three examples:
 \paragraph{Example 1} Exponential family - Normal distribution with $\sigma^2 = 1$ and $g^{-1}$ is the identity function.
 This gives us the linear regression
