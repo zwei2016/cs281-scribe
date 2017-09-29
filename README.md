@@ -13,3 +13,5 @@ Lecture 5 - [Linear Classification](https://github.com/harvard-ml-courses/cs281-
 Lecture 6 - [Exponential Families](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/6/6.pdf)
 
 Lecture 7 - [Neural Networks](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/7/7.pdf)
+
+Lecture 8 - [Backpropagation and Directed Graphical Models](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/8/8.pdf)
