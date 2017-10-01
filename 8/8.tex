@@ -1,13 +1,9 @@
 \documentclass{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphics}
-\usepackage{common}
-\usepackage{pagesetup}
-\usepackage{placeins}
-\usepackage{tikz}
-\usetikzlibrary{calc, arrows.meta, positioning}
+\usepackage{../common}
+\usepackage{../pagesetup}
 
-\newcommand{\N}{\mathcal{N}}
 
 \begin{document}
 
@@ -313,7 +309,7 @@ If we have multiple examples, we can use a plate-in-plate representation as in F
 \subsection{Gaussian Directed Models}
 Gaussian directed models are a special case of DGMs where every one of the variables has the following distribution:
 \[
-p(x_i \mid \mathrm{pa}(x_i)) = \N (x_i \mid \mu_i + \sum_{j = \mathrm{pa}(x_i)} W_{ij} (x_{ij} - \mu_j), \;\; \sigma_i^2) 
+p(x_i \mid \mathrm{pa}(x_i)) = \N (x_i \mid \mu_i + \sum_{j = \mathrm{pa}(x_i)} W_{ij} (x_{j} - \mu_j), \;\; \sigma_i^2) 
 \]
 In the above equation, we transform each of the $\mu_i$ based on the starting mean plus a linear transformation of their parents (and to simplify things, we subtract the mean of each parent). We have an underlying generative process where each one of our random variables is a draw from a Gaussian and its children  are a linear transformations of that draw.
 
