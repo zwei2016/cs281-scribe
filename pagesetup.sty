@@ -47,6 +47,7 @@
 \usepackage{graphics}
 \usepackage{placeins}
 \usepackage{tikz}
+\usetikzlibrary{bayesnet}
 \usetikzlibrary{calc, arrows.meta, positioning}
 
 
@@ -74,3 +75,16 @@
 \newcommand{\on}{\operatorname}
 \newcommand{\N}{\mathcal{N}}
 % \newcommand{\exp}{\on{exp}}
+
+\setlength{\parindent}{0em}
+\usepackage{tikz}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+\def\crossmark{\tikz\fill[scale=0.4](0.01,0) -- (0,0.01) -- (.45,.5) -- (0,0.99) -- (0.01,1) -- (.5,.55) -- (0.99,1) -- (1,0.99) -- (0.55,0.5) -- (1,0.01) -- (0.99,0) -- (0.5,0.45) -- cycle;}
+\newcommand\encirc[1]{%
+  \tikz[baseline=(X.base)]
+    \node (X) [draw, shape=circle, inner sep=0] {\strut #1};}
+\usepackage{cancel}
+\newcommand\encircshaded[1]{%
+  \tikz[baseline=(X.base)]
+    \node (X) [draw, shape=circle, inner sep=0, shade] {\strut #1};}
+\usepackage{cancel}
