@@ -146,7 +146,7 @@ Recalling Subsection 1.1, we write
 p(y_{1:T}|x_{1:T} = exp\{\sum\limits_{t}(\theta_t^h(y_t,y_{t-1})+\theta_t^o(y_t,x_t)) - A(\theta) \}
 \]
 Here $h$ and $o$ refer to the labeled arrows in the diagram.
-This is the general form of any Markov Model. Note that because we have observed the features $x_{1:T}$, we may rewrite the $\T_t^o(y_t,x_t)$ terms as $\theta_t^o(y_t;x_t)$. If we are trying to do inference, we can think of the above after conditioning as simply
+This is the general form of any Markov Model. Note that because we have observed the features $x_{1:T}$, we may rewrite the $T_t^o(y_t,x_t)$ terms as $\theta_t^o(y_t;x_t)$. If we are trying to do inference, we can think of the above after conditioning as simply
 \begin{center}
 \includegraphics[scale=.1]{M_chain} 
 \end{center}
@@ -170,8 +170,9 @@ However this may be computationally intractable, as the $x''$ we sum over is the
 
 Bertrand Schnieder gave a snazzy guest lecture on his research, and advertised that the datasets from his research would be ideal as a base for CS 281 final projects.  We take a moment to review his lecture below.
 
+Schnieder was very interested in studying patterns across concepts of collaborative learning. For example, joint attention refers to when a group of individuals are focused on the same physical object, and is an important part of language development. Signs of joint attention can be seen in the physical movement of the individuals involved, such as their eye movements, gestures, and body postures. 
 
-Schnieder was very interested in studying patterns across concepts of collaborative learning. For example, joint attention refers to when a group of individuals are focused on the same physical object, and is an important part of language development. Signs of joint attention can be seen in the physical movement of the individuals involved, such as their eye movements, gestures, and body postures. Schnieder discussed studies that he and others carried out to explore joint attention. For example, one study gave forty-two pairs of two participants a task to solve, within a total of forty-five minutes of time. Over that time period, Schnieder et al. used high-frequency and multi-modal sensors to track different aspects of movement, including: video, audio, eye movement (tracked at 60Hz), physiological data (like heart rate; tracked at 1-30Hz), and even body posing and coordination (using a Kinect; tracked at 30Hz). Schnieder pointed out that these sorts of studies provide massive amounts of data. During the lecture, he highlighted that there are a number of cool CS 281 projects that could arise from datasets like this one. Some projects he proposed are:
+Schnieder discussed studies that he and others carried out to explore joint attention. For example, one study gave forty-two pairs of two participants a task to solve, within a total of forty-five minutes of time. Over that time period, Schnieder et al. used high-frequency and multi-modal sensors to track different aspects of movement, including: video, audio, eye movement (tracked at 60Hz), physiological data (like heart rate; tracked at 1-30Hz), and even body posing and coordination (using a Kinect; tracked at 30Hz). Schnieder pointed out that these sorts of studies provide massive amounts of data. During the lecture, he highlighted that there are a number of cool CS 281 projects that could arise from datasets like this one. Some projects he proposed are:
 \begin{enumerate}
 
 \item Unsupervised machine learning: modeling collaborative learning processes with probabilistic graphical models.
@@ -179,6 +180,8 @@ Schnieder was very interested in studying patterns across concepts of collaborat
 \item Design your own!
 
 \end{enumerate}
-\end{document}
 
 Schnieder emphasized that he is open to ideas, and that he highly encourages anyone interested in working with this data in some way or form to email him at bertrand\_schneider@gse.harvard.edu.
+
+\end{document}
+
