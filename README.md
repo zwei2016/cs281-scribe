@@ -19,3 +19,6 @@ Lecture 8 - [Backpropagation and Directed Graphical Models](https://github.com/h
 Lecture 9 - [Undirected Graphical Models](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/9/9.pdf)
 
 Lecture 10 - [Time Series](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/10/10.pdf)
+
+Lecture 11 - [Belief Propagation](https://github.com/harvard-ml-courses/cs281-scribe/blob/master/11/11.pdf)
+
